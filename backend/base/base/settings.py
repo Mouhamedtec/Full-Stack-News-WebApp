@@ -141,7 +141,7 @@ else:
                 "SOCKET_TIMEOUT": 5,  # seconds
                 "IGNORE_EXCEPTIONS": True,  # Continue if Redis is down
             },
-            "KEY_PREFIX": "bpay",  # prevent collisions if sharing Redis
+            "KEY_PREFIX": "newsweb",  # prevent collisions if sharing Redis
         }
     }
 
