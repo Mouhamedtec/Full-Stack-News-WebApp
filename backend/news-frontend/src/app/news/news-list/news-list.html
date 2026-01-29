@@ -1,0 +1,123 @@
+<section class="news-page">
+	<div class="hero-card">
+		<div>
+			<p class="eyebrow">Smart discovery</p>
+			<h1>Discover the stories shaping today</h1>
+			<p class="subtitle">
+				Search, filter, and sort global coverage with built-in language and country biasing.
+			</p>
+		</div>
+		<div class="stats">
+			<div class="stat">
+				<span class="stat-label">Results</span>
+				<span class="stat-value">{{ totalResults | number }}</span>
+			</div>
+			<div class="stat">
+				<span class="stat-label">Page</span>
+				<span class="stat-value">{{ page }} / {{ totalPages }}</span>
+			</div>
+		</div>
+	</div>
+
+	<section class="filter-card">
+		<form [formGroup]="form" (ngSubmit)="applyFilters()">
+			<div class="filter-grid">
+				<label class="field">
+					<span>Search</span>
+					<input type="text" formControlName="search" placeholder="e.g. climate policy" />
+				</label>
+
+				<label class="field">
+					<span>Category</span>
+					<select formControlName="category">
+						<option value="">All categories</option>
+						<option *ngFor="let category of categories" [value]="category">{{ category }}</option>
+					</select>
+				</label>
+
+				<label class="field">
+					<span>Source</span>
+					<input type="text" formControlName="source" placeholder="BBC News" />
+				</label>
+
+				<label class="field">
+					<span>Author</span>
+					<input type="text" formControlName="author" placeholder="Reporter name" />
+				</label>
+
+				<label class="field">
+					<span>Language</span>
+					<select formControlName="user_language">
+						<option value="">Auto-detect</option>
+						<option *ngFor="let language of languages" [value]="language">{{ language }}</option>
+					</select>
+				</label>
+
+				<label class="field">
+					<span>Country</span>
+					<select formControlName="user_country_code">
+						<option value="">Global</option>
+						<option *ngFor="let country of countries" [value]="country">{{ country }}</option>
+					</select>
+				</label>
+
+				<label class="field">
+					<span>Date from</span>
+					<input type="datetime-local" formControlName="date_from" />
+				</label>
+
+				<label class="field">
+					<span>Date to</span>
+					<input type="datetime-local" formControlName="date_to" />
+				</label>
+
+				<label class="field">
+					<span>Sort by</span>
+					<select formControlName="sort_by">
+						<option *ngFor="let option of sortOptions" [value]="option.value">{{ option.label }}</option>
+					</select>
+				</label>
+			</div>
+
+			<div class="actions">
+				<button class="primary" type="submit" [disabled]="loading">Apply filters</button>
+				<button class="ghost" type="button" (click)="resetFilters()" [disabled]="loading">Reset</button>
+			</div>
+		</form>
+	</section>
+
+	<section class="results">
+		<div *ngIf="loading" class="state">Loading headlines…</div>
+		<div *ngIf="error" class="state error">{{ error }}</div>
+		<div *ngIf="!loading && !error && articles.length === 0" class="state">No stories found.</div>
+
+		<div class="grid" *ngIf="!loading && !error && articles.length">
+			<article class="news-card" *ngFor="let article of articles">
+				<div class="media" [class.placeholder]="!article.url_to_image">
+					<img *ngIf="article.url_to_image" [src]="article.url_to_image" [alt]="article.title" />
+					<div *ngIf="!article.url_to_image" class="placeholder-art">No image</div>
+				</div>
+				<div class="card-body">
+					<div class="meta">
+						<span class="chip">{{ article.category || 'general' }}</span>
+						<span class="source">{{ article.source }}</span>
+						<span class="dot">•</span>
+						<span class="date">{{ article.published_date | date : 'medium' }}</span>
+					</div>
+					<h3>{{ article.title }}</h3>
+					<p>{{ article.content_preview }}</p>
+					<div class="card-footer">
+						<span class="author" *ngIf="article.author">By {{ article.author }}</span>
+						<a class="link" [href]="article.url" target="_blank" rel="noopener">Read full story</a>
+					</div>
+				</div>
+			</article>
+		</div>
+	</section>
+
+	<div class="pagination" *ngIf="totalResults">
+		<button class="ghost" type="button" (click)="previousPage()" [disabled]="(!previousUrl && page === 1) || loading">Previous</button>
+		<span class="page-info">Page {{ page }} of {{ totalPages }}</span>
+		<button class="ghost" type="button" (click)="nextPage()" [disabled]="(!nextUrl && page >= totalPages) || loading">Next</button>
+	</div>
+</section>

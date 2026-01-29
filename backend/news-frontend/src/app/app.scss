@@ -1,0 +1,50 @@
+.app-shell {
+	min-height: 100vh;
+	display: flex;
+	flex-direction: column;
+	color: #0f172a;
+}
+
+.app-header {
+	padding: 2.5rem clamp(1.5rem, 4vw, 4rem) 1.5rem;
+	text-align: center;
+}
+
+.brand {
+	font-size: clamp(2rem, 3.5vw, 3.25rem);
+	font-weight: 700;
+	letter-spacing: -0.03em;
+	display: inline-flex;
+	gap: 0.5rem;
+	align-items: baseline;
+}
+
+.brand-mark {
+	color: #0f172a;
+}
+
+.brand-mark.accent {
+	color: #2563eb;
+}
+
+.tagline {
+	margin-top: 0.5rem;
+	font-size: clamp(1rem, 1.5vw, 1.125rem);
+	color: #475569;
+}
+
+.app-main {
+	flex: 1;
+	padding: 0 clamp(1.25rem, 4vw, 4rem) 3rem;
+}
+
+.app-footer {
+	padding: 1.5rem clamp(1.25rem, 4vw, 4rem) 2rem;
+	border-top: 1px solid rgba(148, 163, 184, 0.3);
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	gap: 0.5rem;
+	color: #64748b;
+	font-size: 0.9rem;
+}

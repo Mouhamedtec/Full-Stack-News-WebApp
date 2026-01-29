@@ -46,6 +46,7 @@ else:
 INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
+    'corsheaders',
     'news.apps.NewsConfig',
     'drf_spectacular',
     'django.contrib.admin',
@@ -59,6 +60,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -209,6 +211,14 @@ REST_FRAMEWORK = {
         'user': '1000000/day'
     }
 }
+
+# CORS configuration
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:4200',
+]
+
+# If you ever need to send cookies/authorization from Angular, enable this
+# CORS_ALLOW_CREDENTIALS = True
 
 # News API configuration
 NEWSAPI_API_KEY = env('NEWSAPI_API_KEY')

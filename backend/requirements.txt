@@ -2,6 +2,7 @@ Django==5.2.4
 django-environ==0.12.0
 djangorestframework==3.16.1
 drf-spectacular==0.28.0
+django-cors-headers==4.7.0
 newsapi-python==0.2.7
 numpy==1.24.1
 fasttext==0.9.3
