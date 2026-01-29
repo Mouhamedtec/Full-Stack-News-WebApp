@@ -1,0 +1,90 @@
+services:
+  db:
+    image: postgres:17-alpine
+    container_name: newsdb_postgres
+    env_file: .env
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./backups:/backups
+    expose:
+      - "5432"
+    restart: unless-stopped
+    networks:
+      - news_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-newsdb_user} -d ${POSTGRES_DB:-newsdb}"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          cpus: "0.75"
+          memory: 1.5g
+
+  redis:
+    image: redis:8-alpine
+    container_name: news_redis
+    volumes:
+      - redis_data:/data
+    networks:
+      - news_network
+    deploy:
+      resources:
+        limits:
+          cpus: "0.25"
+          memory: 256m
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.deploy
+    container_name: news_web
+    expose:
+      - "8282"
+    env_file: .env
+    volumes:
+      - logs_volume:/app/logs
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - news_network
+    shm_size: 2gb
+    deploy:
+      resources:
+        limits:
+          cpus: "1"
+          memory: 2g
+
+  nginx:
+    image: nginx:alpine
+    container_name: news_nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+      - static_volume:/app/staticfiles:ro
+      - media_volume:/app/media:ro
+    depends_on:
+      - web
+    restart: unless-stopped
+    networks:
+      - news_network
+    deploy:
+      resources:
+        limits:
+          cpus: "0.75"
+          memory: 1.5g
+
+volumes:
+  postgres_data:
+    driver: local
+  redis_data:
+  logs_volume:
+
+networks:
+  news_network:
+    driver: bridge

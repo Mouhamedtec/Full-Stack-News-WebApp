@@ -1,0 +1,2 @@
+class KeywordExtractionError(Exception):
+    pass
