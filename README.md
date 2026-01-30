@@ -198,14 +198,3 @@ If you want, I can open a PR that replaces the repository README with this conte
 This repository does not include a LICENSE file (or the license is not documented here). Please add a LICENSE (e.g., MIT) if you want to make the project permissively licensed.
 
 ---
-
-## Contact
-
-Maintainer: repository owner (Mouhamedtec)
-
----
-
-Thanks — tell me if you'd like:
-- A PR created that replaces the root README.md with this version,
-- Any wording changes, or
-- A shorter README (summary) plus a longer developer-oriented CONTRIBUTING or DEVELOPER doc.
